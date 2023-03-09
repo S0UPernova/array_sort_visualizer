@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "http-server -c-1 -d false",
+    "nodemon": "nodemon --exec npm start"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
