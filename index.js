@@ -262,7 +262,6 @@ let lastTouchPos = undefined
 function handleTouchScroll(e) {
   // console.log(lastTouchPos)
   if (showingOverlay) {
-    e.preventDefault()
     if (lastTouchPos === undefined) {
       lastTouchPos = e.touches[0].pageY
       return

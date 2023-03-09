@@ -5,7 +5,5 @@ canvas {
 }
 body {
   margin: 0;
-}
-body.text {
-  display: none;
+  overscroll-behavior-y: contain;
 }
