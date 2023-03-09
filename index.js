@@ -11,12 +11,11 @@ const qOfScreen = ctx.canvas.width / 4
 const addPosition = { x: qOfScreen - 50, y: 20, with: 100, height: 50 },
   randomizePosition = { x: qOfScreen * 3 - 50, y: 20, with: 100, height: 50 },
   sortButton = { x: qOfScreen * 2 - 50, y: 20, with: 100, height: 50 },
-  totalHeightOfReturnStack = 450,
+  totalHeightOfReturnStack = 600,
   steps = []
 
 let arr = [1, 2, 3],
   showingOverlay = false,
-  posX = 0,
   posY = 0
 
 function main() {
@@ -107,7 +106,6 @@ async function handleClick(e) {
   ) {
     showingOverlay = true
     steps.splice(0, steps.length)
-    posX = 0
     posY = 0
     arr = [...await mergeSort(arr)]
   }
@@ -121,8 +119,8 @@ async function handleClick(e) {
     console.log('x clicked')
     showingOverlay = false
   }
-  console.log('x',e.x)
-  console.log('y',e.y)
+  console.log('x', e.x)
+  console.log('y', e.y)
 }
 
 function delay(time) {
@@ -149,46 +147,46 @@ function drawStep(step, returnStackNumber) {
   // horizontal line between steps
   if (returnStackNumber > 0) {
     ctx.fillStyle = "#333"
-    ctx.fillRect(posX + 0, posY - 10 + (returnStackNumber * 450), ctx.canvas.width / 2, 4)
+    ctx.fillRect(0, posY - 10 + (returnStackNumber * totalHeightOfReturnStack), ctx.canvas.width / 2, 4)
   }
   // the return number in order or returns
   ctx.fillStyle = "#fff"
   ctx.font = "24px serif"
-  ctx.fillText(`return #${returnStackNumber + 1}, depth ${step.level}`, posX + 10, posY + 24 + (returnStackNumber * 450))
+  ctx.fillText(`return #${returnStackNumber + 1}, depth ${step.level}`, 10, posY + 24 + (returnStackNumber * totalHeightOfReturnStack))
 
   // input
-  ctx.fillText(`input`, posX + 10, posY + 50 + (returnStackNumber * totalHeightOfReturnStack))
+  ctx.fillText(`input`, 10, posY + 50 + (returnStackNumber * totalHeightOfReturnStack))
   ctx.fillStyle = "#000"
   drawList([...step.input], 50, posY + (returnStackNumber * totalHeightOfReturnStack))
 
   // left
   ctx.fillStyle = "#fff"
-  ctx.fillText(`returned from left`, posX + 10, posY + 150 + (returnStackNumber * totalHeightOfReturnStack))
+  ctx.fillText(`returned from left`, 10, posY + 200 + (returnStackNumber * totalHeightOfReturnStack))
   if (step.left?.length) {
     ctx.fillStyle = "#000"
-    drawList([...step.left], posX + 50, posY + 100 + (returnStackNumber * totalHeightOfReturnStack))
+    drawList([...step.left], 50, posY + 150 + (returnStackNumber * totalHeightOfReturnStack))
   }
   else {
-    ctx.fillText(`__`, posX + 10, posY + 200 + (returnStackNumber * totalHeightOfReturnStack))
+    ctx.fillText(`__`, 10, posY + 250 + (returnStackNumber * totalHeightOfReturnStack))
   }
 
   // right
   ctx.fillStyle = "#fff"
-  ctx.fillText(`returned from right`, posX + 10, posY + 250 + (returnStackNumber * totalHeightOfReturnStack))
+  ctx.fillText(`returned from right`, 10, posY + 350 + (returnStackNumber * totalHeightOfReturnStack))
   if (step.right?.length) {
     ctx.fillStyle = "#000"
-    drawList([...step.right], posX + 50, posY + 200 + (returnStackNumber * totalHeightOfReturnStack))
+    drawList([...step.right], 50, posY + 300 + (returnStackNumber * totalHeightOfReturnStack))
   }
   else {
-    ctx.fillText(`__`, posX + 10, posY + 300 + (returnStackNumber * totalHeightOfReturnStack))
+    ctx.fillText(`__`, 10, posY + 400 + (returnStackNumber * totalHeightOfReturnStack))
   }
 
   // output
   ctx.fillStyle = "#fff"
-  ctx.fillText(`output`, posX + 10, posY + 350 + (returnStackNumber * totalHeightOfReturnStack))
+  ctx.fillText(`output`, 10, posY + 500 + (returnStackNumber * totalHeightOfReturnStack))
   if (step?.output?.length) {
     ctx.fillStyle = "#000"
-    drawList(step.output, posX + 50, posY + 300 + (returnStackNumber * totalHeightOfReturnStack))
+    drawList(step.output, 50, posY + 450 + (returnStackNumber * totalHeightOfReturnStack))
   }
 }
 
@@ -263,16 +261,19 @@ function handleScroll(e) {
 let lastTouchPos = undefined
 function handleTouchScroll(e) {
   // console.log(lastTouchPos)
-  if (lastTouchPos === undefined) {
-    lastTouchPos = e.touches[0].pageY
-    return
+  if (showingOverlay) {
+    e.preventDefault()
+    if (lastTouchPos === undefined) {
+      lastTouchPos = e.touches[0].pageY
+      return
+    }
+    else {
+      // const tmp = 
+      scroll(e.touches[0].pageY - lastTouchPos)
+      lastTouchPos = e.touches[0].pageY
+    }
   }
-  else {
-    // const tmp = 
-    scroll(e.touches[0].pageY - lastTouchPos)
-    lastTouchPos = e.touches[0].pageY
-  }
-  
+
 }
 
 function init() {
@@ -281,6 +282,6 @@ function init() {
   window.addEventListener("keydown", handleKey)
   window.addEventListener("wheel", handleScroll)
   window.addEventListener("touchmove", handleTouchScroll)
-  window.addEventListener("touchend", () => {lastTouchPos = undefined})
+  window.addEventListener("touchend", () => { lastTouchPos = undefined })
 }
 init()

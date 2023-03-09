@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "http-server -c-1 -d false",
+    "start": "http-server -c-1",
     "nodemon": "nodemon --exec npm start"
   },
   "devDependencies": {
