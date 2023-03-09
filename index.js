@@ -11,7 +11,7 @@ const qOfScreen = ctx.canvas.width / 4
 const addPosition = { x: qOfScreen - 50, y: 20, with: 100, height: 50 },
   randomizePosition = { x: qOfScreen * 3 - 50, y: 20, with: 100, height: 50 },
   sortButton = { x: qOfScreen * 2 - 50, y: 20, with: 100, height: 50 },
-  totalHeightOfReturnStack = 600,
+  totalHeightOfReturnStack = 650,
   steps = []
 
 let arr = [1, 2, 3],
