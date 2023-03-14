@@ -2,9 +2,9 @@
  * @param {Event} e 
  * @param {(scrollBy: number) => void} scroll 
  */
-export function scrollWithKeys(e, scroll) {
+export function scrollWithKeys(e, scroll, setShowOverlay) {
   if (e.keyCode === 27) {
-    showingOverlay = false
+    setShowOverlay(false)
   }
   else if (e.keyCode === 38) {
     scroll(50)
