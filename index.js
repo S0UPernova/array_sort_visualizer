@@ -110,6 +110,10 @@ function scroll(scrollBy) {
   posY += scrollBy
 }
 
+function setShowOverlay(bool) {
+  showingOverlay = bool
+}
+
 // this one is a little hard to move, so here it stays for now
 async function handleClick(e) {
   // add array item button
@@ -155,7 +159,7 @@ async function handleClick(e) {
 function init() {
   window.requestAnimationFrame(main)
   canvas.addEventListener("mousedown", handleClick)
-  window.addEventListener("keydown", (e) => { Handle.scrollWithKeys(e, scroll) })
+  window.addEventListener("keydown", (e) => { Handle.scrollWithKeys(e, scroll, setShowOverlay) })
   window.addEventListener("wheel", (e) => { Handle.scrollWithWheel(e, scroll) })
   window.addEventListener("touchmove", (e) => { Handle.scrollWithTouch(e, scroll) })
   window.addEventListener("touchend", () => { Handle.touchEnd() })

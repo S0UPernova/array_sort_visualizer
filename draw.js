@@ -50,13 +50,7 @@ export function overlay(ctx) {
 }
 
 export async function steps(steps, ctx, posY, setHeight) {
-  // console.log('steps',steps.length)
   steps.forEach(async (step, i) => {
-    // function logSteps() {
-      // for (const [key, value,] of Object.entries(step)) {
-        
-      // }
-    // }
     drawStep(step, i, ctx, posY, setHeight)
   })
 }
