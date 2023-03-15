@@ -29,7 +29,7 @@ export function scrollWithWheel(e, scroll) {
 }
 let lastTouchPos = undefined
 export function scrollWithTouch(e, scroll) {
-  if (showingOverlay) {
+  // if (showingOverlay) {
     if (lastTouchPos === undefined) {
       lastTouchPos = e.touches[0].pageY
       return
@@ -39,7 +39,7 @@ export function scrollWithTouch(e, scroll) {
       scroll(e.touches[0].pageY - lastTouchPos)
       lastTouchPos = e.touches[0].pageY
     }
-  }
+  // }
 }
 
 /**

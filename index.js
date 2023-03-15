@@ -42,30 +42,7 @@ function main() {
   }
 }
 
-/**
- * @param {number} time - milliseconds 
- * @returns {Promise}
- */
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
 
-/**
- * changes posY to jump to relative location
- * @param {number} jumpBy 
- */
-function jumpToNextItem(jumpBy) {
-  posY -= jumpBy
-}
-
-/**
- * sets height to jump by
- * @param {number} height 
- * @returns {void}
- */
-function setHeight(height) {
-  totalHeightOfReturnStack = height
-}
 
 /**
  * 
@@ -103,6 +80,31 @@ async function mergeSort(arr, depth = 0) {
   if (depth > 0) jumpToNextItem(totalHeightOfReturnStack)
 
   return [...output, ...left, ...right]
+}
+
+/**
+ * @param {number} time - milliseconds 
+ * @returns {Promise}
+ */
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+/**
+ * changes posY to jump to relative location
+ * @param {number} jumpBy 
+ */
+function jumpToNextItem(jumpBy) {
+  posY -= jumpBy
+}
+
+/**
+ * sets height to jump by
+ * @param {number} height 
+ * @returns {void}
+ */
+function setHeight(height) {
+  totalHeightOfReturnStack = height
 }
 
 // changes posY to scroll
@@ -161,7 +163,7 @@ function init() {
   canvas.addEventListener("mousedown", handleClick)
   window.addEventListener("keydown", (e) => { Handle.scrollWithKeys(e, scroll, setShowOverlay) })
   window.addEventListener("wheel", (e) => { Handle.scrollWithWheel(e, scroll) })
-  window.addEventListener("touchmove", (e) => { Handle.scrollWithTouch(e, scroll) })
-  window.addEventListener("touchend", () => { Handle.touchEnd() })
+  window.addEventListener("touchmove", (e) => { if (showingOverlay) Handle.scrollWithTouch(e, scroll) })
+  window.addEventListener("touchend", Handle.touchEnd)
 }
 init()
