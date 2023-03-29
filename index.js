@@ -53,7 +53,7 @@ async function mergeSort(arr, depth = 0) {
   if (arr.length <= 1) {
     // only the return is part of the algorithm
     steps.push({ depth: depth, input: [...arr], left: undefined, right: undefined, output: [...arr] })
-    await delay(1000)
+    await delay(showingOverlay ? 1000 : 0)
     jumpToNextItem(totalHeightOfReturnStack)
     return [...arr]
   }
@@ -76,11 +76,112 @@ async function mergeSort(arr, depth = 0) {
 
   // from here only the return is part of the algorithm
   steps.push({ depth: depth, input: arr, left: initialLeft, right: initialRight, output: [...output, ...left, ...right] })
-  await delay(1000)
+  await delay(showingOverlay ? 1000 : 0)
   if (depth > 0) jumpToNextItem(totalHeightOfReturnStack)
 
   return [...output, ...left, ...right]
 }
+
+/**
+ * 
+ * @param {number[]} arr 
+ */
+async function bubbleSort(arr) {
+
+  // steps.push({ todo: "add steps" })
+  // await delay(showingOverlay ? 1000 : 0)
+
+  let i = 0;
+  let swap = false;
+  // let loop = true
+  do {
+    let left = arr[i];
+    let right = arr[i + 1];
+
+    await delay(showingOverlay ? 1000 : 0)
+    jumpToNextItem(totalHeightOfReturnStack)
+    console.log('arr', arr)
+    if (arr[i] > arr[i + 1]) {
+      const temp = arr[i]
+      arr[i] = arr[i + 1];
+      arr[i + 1] = temp;
+
+
+      /*let temp = left;
+      left = right;
+      right = temp;*/
+      swap = true;
+      steps.push({ input: arr, index: i, currentItem: left, nextItem: right, swap: swap ? "true" : "false", condition: "swap" })
+
+    }
+    if (i == arr.length - 2 && swap === true) {
+      steps.push({ input: arr, index: i, currentItem: left, nextItem: right, swap: swap ? "true" : "false", condition: "loop" })
+      i = 0
+      swap = false
+    }
+    else if (i === arr.length - 2 && swap === false) {
+      // loop = false
+      steps.push({ input: arr, index: i, currentItem: left, nextItem: right, swap: swap ? "true" : "false", condition: "break" })
+      return arr
+    }
+    else {
+      i++;
+    }
+  } while (true)
+
+}
+
+/**
+ * @param {number[]} arr 
+ * @param {number} start 
+ * @param {number} end 
+ * @returns
+ */
+async function partition(arr, start, end, side, depth) {
+  // Taking the last element as the pivot
+  const pivotValue = arr[end]
+  
+  let pivotIndex = start
+  
+  for (let i = start; i < end; i++) {
+    if (arr[i] < pivotValue) {
+      // Swapping elements
+      [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]]
+      
+      // Moving to next element
+      pivotIndex++;
+    }
+  }
+
+  // Putting the pivot value in the middle
+  if (end !== pivotIndex) [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]]
+  //console.table({ pivot: pivotIndex, start: start, end: end, arr: arr, side: side, depth: depth});
+  steps.push({ pivot: pivotIndex, start: start, end: end, arr: arr, side: side, depth: depth})
+  await delay(showingOverlay ? 1000 : 0)
+  if (depth > 0) jumpToNextItem(totalHeightOfReturnStack)
+  return pivotIndex;
+}
+
+/**
+ * @param {number[]} arr 
+ * @param {number} start 
+ * @param {number} end 
+ * @returns
+ */
+async function quicksortRecursive(arr, start, end, side = "base", depth = 0) {
+  // Base case
+  if (start >= end) {
+    return
+  }
+
+  // Returns pivotIndex
+  let index = await partition(arr, start, end, side, depth)
+  
+  // Recursively apply the same logic to the left and right subarrays
+  quicksortRecursive(arr, start, index - 1, "left", depth + 1)
+  quicksortRecursive(arr, index + 1, end, "right", depth + 1)
+}
+
 
 /**
  * @param {number} time - milliseconds 
@@ -145,7 +246,10 @@ async function handleClick(e) {
     showingOverlay = true
     steps.splice(0, steps.length)
     posY = 0
-    arr = [...await mergeSort(arr)]
+    // arr = [...await mergeSort(arr)]
+    // arr = [...await bubbleSort(arr)]
+    quicksortRecursive(arr, 0, arr.length - 1)
+    // arr = await quicksortRecursive(arr, 0, arr.length)
   }
   else if ( // close button
     e.x > ctx.canvas.width - 48

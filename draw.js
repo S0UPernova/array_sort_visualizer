@@ -8,7 +8,7 @@ export function clear(ctx) {
  */
 export function indexItem(position, value, size, ctx) {
   const fontSize = Math.round(size / 2)
-  const textMargin = (position[0] + fontSize) - ((value.toString().length / 2) * (fontSize / 2)) //- (value.length / 2 * 7)
+  const textMargin = typeof value === "number" ? (position[0] + fontSize) - ((value.toString().length / 2) * (fontSize / 2)) : 0 //- (value.length / 2 * 7)
   ctx.fillRect(position[0], position[1], size, size)
   ctx.font = `${fontSize}px serif`
   ctx.clearRect(position[0] + 5, position[1] + 5, size - 10, size - 10)
@@ -73,7 +73,7 @@ export function drawStep(step, returnStackNumber, ctx, posY, setHeight) {
     ctx.fillStyle = "#fff"
     ctx.fillText(`${key} ${typeof value === 'number' ? `#${value}` : typeof value === 'string' ? `${value}` : ''}`, 10, posY + 50 + (150 * (index)) + (returnStackNumber * height))
     ctx.fillStyle = "#000"
-    if (value?.length && value !== undefined) {
+    if (value?.length && Array.isArray(value) && value !== undefined) {
       list([...value], 50, posY  + (150 * (index)) + (returnStackNumber * height), ctx)
     }
     else if (value === undefined || !typeof value === ('number' || 'string')) {
